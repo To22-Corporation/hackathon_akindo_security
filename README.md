@@ -1,2 +1,11 @@
-https://www.notion.so/9a1ac3dec9ee4f0c9eb69cb9e3800dbf
+# Sample Hardhat Project
 
+This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+
+Try running some of the following tasks:
+
+```shell
+npm install
+node scan-server.js
+curl -X GET http://localhost:8000/erc20scan
+```
