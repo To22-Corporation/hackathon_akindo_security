@@ -27,18 +27,23 @@ describe("ERC20 test sample", function () {
       const getContract = await ethers.getContractFactory(abi, creatinBytecode);
       deployedContract = await getContract.deploy();
       await deployedContract.deployed()
+
+      rawAddresses = await ethers.getSigners();
+      owner = rawAddresses[0];
     })()
   });
 
   /* name test */
   it("name should return a string value", async function () {
     const tokenName = await deployedContract.name();
+    console.log(tokenName)
     assert.typeOf(tokenName, 'string', 'token name is not a string');
   });
 
   /** symbol test */
   it("symbol should return a string value", async function () {
     const tokenSymbol = await deployedContract.symbol();
+    console.log(tokenSymbol)
     assert.typeOf(tokenSymbol, 'string', 'token symbol is not a string');
   });
 
@@ -46,6 +51,7 @@ describe("ERC20 test sample", function () {
   /** このテストよくない。現状uintでもfloatでもなんでも返してもPassしてしまう。それと現状だとNumberだけどBigNumberとして扱う必要があるから変えないと。SolidityではFloatがない（多分）から大丈夫かな？要確認 */
   it("decimal should return a number", async () => {
     const tokenDecimal = await deployedContract.decimals();
+    console.log(tokenDecimal)
     assert.typeOf(tokenDecimal, "number", "token decimal is not a number");
   });
 
@@ -66,11 +72,11 @@ describe("ERC20 test sample", function () {
 
     /** transferした後もBalanceが反映されている */
     if (result) {
-      expect(await deployedContract.balanceOf(rawAddresses[1].address)).to.equal(0);
+      const rawBalance = await deployedContract.balanceOf(rawAddresses[1].address)
+      expect(rawBalance).to.equal(0);
       await deployedContract.transfer(rawAddresses[1].address, 1);
-      expect(await deployedContract.balanceOf(rawAddresses[1].address)).to.equal(1);
+      expect(rawBalance).to.equal(1);
     }
-
     /** その他ユーザーはBalanceが0である。 */
     for (let i = 2; i < 20; i++) {
       expect(await deployedContract.balanceOf(rawAddresses[i].address)).to.equal(0);
