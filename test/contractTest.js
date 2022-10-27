@@ -17,9 +17,9 @@ describe("ERC20 test sample", function () {
       const etherscan_key = process.env.EHTERSCAN_KEY
 
       //const etherscan_network = "api.etherscan.io" //ETHER MAINNET
-      const etherscan_network = "api.bscscan.com" //BSC
+      const etherscan_network = process.env.NETWORK
 
-      const getTransactionLogs = await axios.post(`https://${etherscan_network}/api?module=account&action=txlist&address=${contract_address}&page=1&offset=1&apikey=${etherscan_key}`)
+      const getTransactionLogs = await axios.post(`https://${etherscan_network}api?module=account&action=txlist&address=${contract_address}&page=1&offset=1&apikey=${etherscan_key}`)
       const creatinBytecode = getTransactionLogs.data.result[0].input
       //Abiを取得する
       const getAbi = await axios.post(`https://${etherscan_network}/api?module=contract&action=getabi&address=${contract_address}&apikey=${etherscan_key}`)
@@ -42,14 +42,12 @@ describe("ERC20 test sample", function () {
   /* name test */
   it("name should return a string value", async function () {
     const tokenName = await deployedContract.name();
-    console.log(tokenName)
     assert.typeOf(tokenName, 'string', 'token name is not a string');
   });
 
   /** symbol test */
   it("symbol should return a string value", async function () {
     const tokenSymbol = await deployedContract.symbol();
-    console.log(tokenSymbol)
     assert.typeOf(tokenSymbol, 'string', 'token symbol is not a string');
   });
 
@@ -64,7 +62,6 @@ describe("ERC20 test sample", function () {
   /*
   it("total suppy should return a number", async () => {
     const tokenTotalSupply = await deployedContract.totalSupply();
-    console.log(tokenTotalSupply)
     assert.typeOf(tokenTotalSupply, "BigNumber", "token TotalSupply is not a number");
   });
   */

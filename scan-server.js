@@ -2,12 +2,16 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const bodyParser = require('body-parser');
-var { exec } = require('child_process'); // native in nodeJs
+const dotenv = require("dotenv");
+var { exec } = require('child_process');
 
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+dotenv.config();
+
+const scanABI = require("./namecheck/scanabi.js");
 
 //ERC20テスト実行API
 app.get("/erc20scan", async (req, res) => {
@@ -30,7 +34,11 @@ app.get("/erc20scan", async (req, res) => {
 
 //ERC20関数確認API
 app.get("/erc20FunctionCheck", async (req, res) => {
-
+  const contract_address = process.env.CONTRACT_ADDRESS
+  const scanabi = scanABI["func"]
+  const scanresult = await scanabi(contract_address)
+  // ERC20規格以外の関数名と怪しい関数名チェックの結果を返す
+  console.log("scan result", scanresult);
 })
 
 //ERC20トランザクション確認API
@@ -38,7 +46,8 @@ app.get("/transactionCheck", async (req, res) => {
 
 })
 
-
+/*
 app.listen(8000, () => {
-  console.log(`Server is running on port 8000.`);
+console.log(`Server is running on port 8000.`);
 });
+*/
