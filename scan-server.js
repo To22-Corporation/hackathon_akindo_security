@@ -37,17 +37,35 @@ app.post("/erc20scan", async (req, res) => {
       }
     });
   });
-  const encoderesult = encodeURI(result)
-  res.json({ message: encoderesult });
+
+  const resultResponse = {
+    result1: result.includes("✔ name should return a string value"),
+    result2: result.includes("✔ symbol should return a string value"),
+    result3: result.includes("✔ decimal should return a number"),
+    result4: result.includes("✔ balanceOf should return correct amount for each user"),
+    result5: result.includes("✔ transfer cannot be used by owner that does not have tokens"),
+    result6: result.includes("✔ transfer cannot be used by user that does not have enough tokens"),
+    result7: result.includes("✔ transfer can be used by user that has enough tokens 2"),
+    result8: result.includes("✔ transfer can be used by user that has enough tokens"),
+    result9: result.includes("✔ allowance returns 0 when not approved"),
+    result10: result.includes("✔ allowance returns amount when not approved"),
+    result11: result.includes("✔ approve user can spend token"),
+    result12: result.includes("✔ approve user can spend token 2"),
+    result13: result.includes("✔ approve user can spend token 3"),
+    result14: result.includes("✔ transferFrom cannot be used by owner that does not have tokens"),
+    result15: result.includes("✔ transferFrom cannot be used by user that does not have enough tokens")
+  }
+
+  res.json(resultResponse);
 });
 
 //ERC20関数確認API
-app.get("/erc20FunctionCheck", async (req, res) => {
-  const contract_address = process.env.CONTRACT_ADDRESS
+app.post("/erc20FunctionCheck", async (req, res) => {
+  const contractAddress = req.body.encodedAddress;
   const scanabi = scanABI["func"]
-  const scanresult = await scanabi(contract_address)
+  const scanResult = await scanabi(contractAddress)
   // ERC20規格以外の関数名と怪しい関数名チェックの結果を返す
-  console.log("scan result", scanresult);
+  res.json(scanResult);
 })
 
 //ERC20トランザクション確認API
