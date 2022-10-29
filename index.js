@@ -18,7 +18,7 @@ const scanABI = require("./namecheck/scanabi.js");
 //ERC20テスト実行API
 app.post("/erc20Test", async (req, res) => {
   const contractAddress = req.body.contractAddress;
-  if (!contractAddress.length || contractAddress.length != 42) {
+  if (!contractAddress || contractAddress.length != 42) {
     res.status(401).json({
       status: false,
       message: "contractAddress error",
@@ -57,7 +57,8 @@ app.post("/erc20Test", async (req, res) => {
     result14: result.includes("✔ transferFrom cannot be used by owner that does not have tokens"),
     result15: result.includes("✔ transferFrom cannot be used by user that does not have enough tokens")
   }
-
+  const count = (JSON.stringify(resultResponse).match(/true/g) || [])
+  resultResponse.score = Math.round(count.length / 15 * 100)
   res.json(resultResponse);
 });
 
@@ -67,6 +68,10 @@ app.post("/erc20FunctionCheck", async (req, res) => {
   const scanabi = scanABI["func"]
   const scanResult = await scanabi(contractAddress)
   // ERC20規格以外の関数名と怪しい関数名チェックの結果を返す
+  const funcCount = scanResult.otherFunction.length
+  const trueCount = (JSON.stringify(scanResult.warningDict).match(/true/g) || []).length
+  const score = Math.round(Number(trueCount) / Number(Object.keys(scanResult.warningDict).length) * 100)
+  scanResult.score = score
   res.json(scanResult);
 })
 

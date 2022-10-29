@@ -44,8 +44,9 @@ scanabi = async function (contractAddress) {
             console.log("event or constructor:", responseJSON[i]["name"])
         }
     }
+    const data = { "otherFunction": otherFunction, "warningDict": warningDict }
 
-    return { "other function": otherFunction, "warning dict": warningDict }
+    return data
 }
 
 exports.func = scanabi;
