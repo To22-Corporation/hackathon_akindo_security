@@ -1,6 +1,15 @@
 import type { NextPage } from "next";
+import * as React from "react";
 import { Box } from "@chakra-ui/react";
-import { Input, Button, Flex, Center } from "@chakra-ui/react";
+import {
+  Input,
+  Button,
+  Flex,
+  Center,
+  Radio,
+  RadioGroup,
+  Stack,
+} from "@chakra-ui/react";
 
 type Props = {
   onSubmit: () => void;
@@ -8,9 +17,11 @@ type Props = {
 
 import { useForm } from "react-hook-form";
 const Index: React.FC<Props> = (props) => {
-  const { setValue, getValues, handleSubmit } = useForm({
+  const [radioValue, setRadioValue] = React.useState<string>("ethereum");
+  const { setValue, handleSubmit } = useForm({
     defaultValues: {
       contractAddress: "0x",
+      chain: "ethereum",
     },
   });
 
@@ -25,6 +36,18 @@ const Index: React.FC<Props> = (props) => {
       //   }}
     >
       <form onSubmit={handleSubmit(props.onSubmit)}>
+        <Box maxWidth="800px">
+          <RadioGroup
+            onChange={(data) => setRadioValue(data)}
+            value={radioValue}
+          >
+            <Stack direction="row">
+              <Radio value="ethereum">ethereum</Radio>
+              <Radio value="polygon">polygon</Radio>
+              <Radio value="bsc">bsc</Radio>
+            </Stack>
+          </RadioGroup>
+        </Box>
         <Center>
           <Input
             onChange={(data) => {
