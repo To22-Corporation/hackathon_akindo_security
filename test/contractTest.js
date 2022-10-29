@@ -9,33 +9,33 @@ dotenv.config();
 let rawAddresses, owner, deployedContract;
 var assert = require('chai').assert
 
-describe("ERC20 test sample", function () {
-  //なぜかsetTimeOutの中じゃないとbeforeEachにエラーが出る。。。
-  setTimeout(() => {
-    beforeEach(async function () {
-      const contract_address = await fs.readFile("temp.txt", "utf-8")
-      const etherscan_key = process.env.EHTERSCAN_KEY
-      const etherscan_network = process.env.NETWORK
+let contract_address, creatinBytecode, abi
+const etherscan_key = process.env.EHTERSCAN_KEY
+const etherscan_network = process.env.NETWORK
 
-      const getTransactionLogs = await axios.post(`https://${etherscan_network}api?module=account&action=txlist&address=${contract_address}&page=1&offset=1&apikey=${etherscan_key}`)
-      const creatinBytecode = getTransactionLogs.data.result[0].input
-      //Abiを取得する
-      const getAbi = await axios.post(`https://${etherscan_network}/api?module=contract&action=getabi&address=${contract_address}&apikey=${etherscan_key}`)
-      const abi = JSON.parse(getAbi.data.result)
-      //コントラクトをデプロイ
-      const getContract = await ethers.getContractFactory(abi, creatinBytecode);
-      deployedContract = await getContract.deploy();
-      await deployedContract.deployed()
+describe("ERC20 test", function () {
+  before(async function () {
+    contract_address = await fs.readFile("temp.txt", "utf-8")
+    const getTransactionLogs = await axios.post(`https://${etherscan_network}api?module=account&action=txlist&address=${contract_address}&page=1&offset=1&apikey=${etherscan_key}`)
+    creatinBytecode = getTransactionLogs.data.result[0].input
+    //Abiを取得する
+    const getAbi = await axios.post(`https://${etherscan_network}/api?module=contract&action=getabi&address=${contract_address}&apikey=${etherscan_key}`)
+    abi = JSON.parse(getAbi.data.result)
+  })
 
-      rawAddresses = await ethers.getSigners();
-      owner = rawAddresses[0];
+  beforeEach(async function () {
+    //コントラクトをデプロイ
+    const getContract = await ethers.getContractFactory(abi, creatinBytecode);
+    deployedContract = await getContract.deploy();
+    await deployedContract.deployed()
 
-      //Mintできるもののみテスト
-      //場合によってはアドレスも必要になる場合あり。分岐を追記する
-      await deployedContract.connect(owner).mint(rawAddresses[0].address, 100);
-      //deployedContract.connect(owner).mint(100);
-    })
-  });
+    rawAddresses = await ethers.getSigners();
+    owner = rawAddresses[0];
+    //Mintできるもののみテスト。場合によってはアドレスも必要になる場合あり。分岐を追記する
+    await deployedContract.connect(owner).mint(rawAddresses[0].address, 100);
+    //deployedContract.connect(owner).mint(100);
+  })
+
 
   /* name test */
   it("name should return a string value", async function () {
