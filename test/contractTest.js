@@ -104,7 +104,7 @@ describe("ERC20 test sample", function () {
     await expect(deployedContract.connect(owner).transfer(rawAddresses[1].address, totalsupply.add(1))).to.be.reverted;
   });
   /** トークンを持っているぶんはTransferできる */
-  it("transfer can be used by user that has enough tokens", async () => {
+  it("transfer can be used by user that has enough tokens 1", async () => {
     /** ownerが全Supplyを持っている */
     const ownerbalance = await deployedContract.balanceOf(owner.address);
     const totalsupply = await deployedContract.totalSupply();
@@ -152,7 +152,7 @@ describe("ERC20 test sample", function () {
 
   /** approve test */
   /** approved address can spend token */
-  it("approve user can spend token", async () => {
+  it("approve user can spend token 1", async () => {
     await expect(deployedContract.connect(rawAddresses[1]).transferFrom(owner.address, rawAddresses[1].address, 1)).to.be.reverted;
     await deployedContract.connect(owner).approve(rawAddresses[1].address, 1);
     expect(await deployedContract.balanceOf(rawAddresses[1].address)).to.equal(0);

@@ -18,7 +18,7 @@ const scanABI = require("./namecheck/scanabi.js");
 //ERC20テスト実行API
 app.post("/erc20Test", async (req, res) => {
   const contractAddress = req.body.contractAddress;
-  if (contractAddress.length != 42) {
+  if (!contractAddress.length || contractAddress.length != 42) {
     res.status(401).json({
       status: false,
       message: "contractAddress error",
@@ -38,6 +38,7 @@ app.post("/erc20Test", async (req, res) => {
       }
     });
   });
+  console.log(result)
 
   const resultResponse = {
     result1: result.includes("✔ name should return a string value"),
@@ -46,11 +47,11 @@ app.post("/erc20Test", async (req, res) => {
     result4: result.includes("✔ balanceOf should return correct amount for each user"),
     result5: result.includes("✔ transfer cannot be used by owner that does not have tokens"),
     result6: result.includes("✔ transfer cannot be used by user that does not have enough tokens"),
-    result7: result.includes("✔ transfer can be used by user that has enough tokens 2"),
-    result8: result.includes("✔ transfer can be used by user that has enough tokens"),
+    result7: result.includes("✔ transfer can be used by user that has enough tokens 1"),
+    result8: result.includes("✔ transfer can be used by user that has enough tokens 2"),
     result9: result.includes("✔ allowance returns 0 when not approved"),
     result10: result.includes("✔ allowance returns amount when not approved"),
-    result11: result.includes("✔ approve user can spend token"),
+    result11: result.includes("✔ approve user can spend token 1"),
     result12: result.includes("✔ approve user can spend token 2"),
     result13: result.includes("✔ approve user can spend token 3"),
     result14: result.includes("✔ transferFrom cannot be used by owner that does not have tokens"),
