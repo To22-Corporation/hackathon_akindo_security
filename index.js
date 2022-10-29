@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const fs = require('fs').promises
 var { exec } = require('child_process');
 
+app.set('port', (process.env.PORT || 3000));
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -74,6 +75,6 @@ app.get("/transactionCheck", async (req, res) => {
 })
 
 
-app.listen(8000, () => {
-  console.log(`Server is running on port 8000.`);
+app.listen(app.get('port'), function () {
+  console.log("Node app is running at localhost:" + app.get('port'));
 });
