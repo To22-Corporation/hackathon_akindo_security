@@ -17,7 +17,7 @@ const scanABI = require("./namecheck/scanabi.js");
 
 //ERC20テスト実行API
 app.post("/erc20Test", async (req, res) => {
-  const contractAddress = req.body.encodedAddress;
+  const contractAddress = req.body.contractAddress;
   if (contractAddress.length != 42) {
     res.status(401).json({
       status: false,
@@ -62,7 +62,7 @@ app.post("/erc20Test", async (req, res) => {
 
 //ERC20関数確認API
 app.post("/erc20FunctionCheck", async (req, res) => {
-  const contractAddress = req.body.encodedAddress;
+  const contractAddress = req.body.contractAddress;
   const scanabi = scanABI["func"]
   const scanResult = await scanabi(contractAddress)
   // ERC20規格以外の関数名と怪しい関数名チェックの結果を返す
