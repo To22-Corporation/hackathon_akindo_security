@@ -2,6 +2,7 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const dotenv = require("dotenv");
 const axios = require("axios");
+const fs = require('fs').promises
 
 dotenv.config();
 
@@ -9,14 +10,11 @@ let rawAddresses, owner, deployedContract;
 var assert = require('chai').assert
 
 describe("ERC20 test sample", function () {
-
   //なぜかsetTimeOutの中じゃないとbeforeEachにエラーが出る。。。
   setTimeout(() => {
     beforeEach(async function () {
-      const contract_address = process.env.CONTRACT_ADDRESS
+      const contract_address = await fs.readFile("temp.txt", "utf-8")
       const etherscan_key = process.env.EHTERSCAN_KEY
-
-      //const etherscan_network = "api.etherscan.io" //ETHER MAINNET
       const etherscan_network = process.env.NETWORK
 
       const getTransactionLogs = await axios.post(`https://${etherscan_network}api?module=account&action=txlist&address=${contract_address}&page=1&offset=1&apikey=${etherscan_key}`)

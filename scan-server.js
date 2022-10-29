@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express();
 const bodyParser = require('body-parser');
 const dotenv = require("dotenv");
+const fs = require('fs').promises
 var { exec } = require('child_process');
 
 app.use(cors());
@@ -14,9 +15,17 @@ dotenv.config();
 const scanABI = require("./namecheck/scanabi.js");
 
 //ERC20テスト実行API
-app.get("/erc20scan", async (req, res) => {
-  //const encodedAddress = req.query.address;
-  //const searchAddress = decodeURI(encodedAddress)
+app.post("/erc20scan", async (req, res) => {
+  const contractAddress = req.body.encodedAddress;
+  if (contractAddress.length != 42) {
+    res.status(401).json({
+      status: false,
+      message: "contractAddress error",
+    });
+  }
+  await fs.writeFile("temp.txt", contractAddress, (err) => {
+    if (err) throw err;
+  });
   const result = await new Promise((resolve, reject) => {
     exec('npx hardhat test', (error, stdout, stderr) => {
       const response = decodeURIComponent(stdout)
@@ -28,7 +37,7 @@ app.get("/erc20scan", async (req, res) => {
       }
     });
   });
-  encoderesult = encodeURI(result)
+  const encoderesult = encodeURI(result)
   res.json({ message: encoderesult });
 });
 
@@ -46,8 +55,7 @@ app.get("/transactionCheck", async (req, res) => {
 
 })
 
-/*
+
 app.listen(8000, () => {
-console.log(`Server is running on port 8000.`);
+  console.log(`Server is running on port 8000.`);
 });
-*/
