@@ -16,7 +16,7 @@ dotenv.config();
 const scanABI = require("./namecheck/scanabi.js");
 
 //ERC20テスト実行API
-app.post("/erc20scan", async (req, res) => {
+app.post("/erc20Test", async (req, res) => {
   const contractAddress = req.body.encodedAddress;
   if (contractAddress.length != 42) {
     res.status(401).json({
@@ -70,7 +70,7 @@ app.post("/erc20FunctionCheck", async (req, res) => {
 })
 
 //ERC20トランザクション確認API
-app.get("/transactionCheck", async (req, res) => {
+app.get("/erc20TransactionCheck", async (req, res) => {
 
 })
 
