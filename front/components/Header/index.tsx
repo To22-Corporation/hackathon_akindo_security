@@ -7,7 +7,7 @@ export const Header: NextPage = () => {
   return (
     <Flex
       backgroundColor="#F5F5F5"
-      padding="16px"
+      padding="16px 80px"
       justifyContent="space-between"
       alignItems="center"
     >
