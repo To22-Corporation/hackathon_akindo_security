@@ -21,7 +21,7 @@ const getTokenAmount = require("./transactionCheck/TotalSupplyMain.js");
 app.post("/erc20Test", async (req, res) => {
   const { contractAddress, network } = req.body;
   if (!contractAddress || contractAddress.length != 42 || (network != "eth" && network != "bsc" && network != "polygon")) {
-    res.status(401).json({
+    res.status(400).json({
       status: false,
       message: "arguments error",
     });
@@ -44,14 +44,14 @@ app.post("/erc20Test", async (req, res) => {
   console.log(result)
 
   if (result.includes("Error: NotVerified")) {
-    res.status(401).json({
+    res.status(400).json({
       status: false,
       message: "not verified",
     });
     return
   }
   if (result.includes("0 passing") && result.includes("1 failing")) {
-    res.status(401).json({
+    res.status(400).json({
       status: false,
       message: "test error",
     });
@@ -84,7 +84,7 @@ app.post("/erc20Test", async (req, res) => {
 app.post("/erc20FunctionCheck", async (req, res) => {
   const { contractAddress, network } = req.body;
   if (!contractAddress || contractAddress.length != 42 || (network != "eth" && network != "bsc" && network != "polygon")) {
-    res.status(401).json({
+    res.status(400).json({
       status: false,
       message: "arguments error",
     });
@@ -104,14 +104,14 @@ app.post("/erc20FunctionCheck", async (req, res) => {
 app.post("/erc20TransactionCheck", async (req, res) => {
   const { contractAddress, network } = req.body;
   if (network == "polygon") {
-    res.status(401).json({
+    res.status(400).json({
       status: false,
       message: "polygon is not supported",
     });
     return
   }
   if (!contractAddress || contractAddress.length != 42 || (network != "eth" && network != "bsc" && network != "polygon")) {
-    res.status(401).json({
+    res.status(400).json({
       status: false,
       message: "arguments error",
     });
@@ -125,7 +125,7 @@ app.post("/erc20TransactionCheck", async (req, res) => {
 app.post("/erc20ScamCheck", async (req, res) => {
   const { contractAddress, network } = req.body;
   if (!contractAddress || contractAddress.length != 42 || (network != "eth" && network != "bsc" && network != "polygon")) {
-    res.status(401).json({
+    res.status(400).json({
       status: false,
       message: "arguments error",
     });
