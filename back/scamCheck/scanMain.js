@@ -6,5 +6,8 @@ exports.scamCheck = async function scamCheck(contractAddress, network) {
     scanscamaddress = scanscamAddress["func"];
     scanresult = await scanscamtoken(contractAddress, network);
     scanaddressresult = await scanscamaddress(contractAddress, network);
-    return { "scamAdress": scanaddressresult, "scamToken": scanresult }
+    //return { "scamAdress": scanaddressresult, "scamToken": scanresult }
+    let result = false
+    if (scanaddressresult || scanresult) result = true
+    return { "result": result }
 };
