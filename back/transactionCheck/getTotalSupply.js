@@ -2,11 +2,19 @@ const Web3 = require('web3');
 
 getTotalSupply = async function (contractAddress, network) {
 
-    let rpcURL
-    if (network == "eth") rpcURL = "https://rpc.flashbots.net/"
-    else if (network == "bsc") rpcURL = `https://radial-blue-slug.bsc.discover.quiknode.pro/${process.env.BSC_QUICKNODE}/`
-    else if (network == "polygon") rpcURL = `https://polygon-mainnet.g.alchemy.com/v2/${process.env.MATIC_ALCHEMY}`
-    const web3 = new Web3(rpcURL)
+    let rpcURL, web3
+    if (network == "eth") {
+        rpcURL = "https://rpc.flashbots.net/"
+        web3 = new Web3(rpcURL)
+    }
+    else if (network == "bsc") {
+        rpcURL = `https://bsc-dataseed1.binance.org:443`
+        web3 = new Web3(rpcURL)
+    }
+    else if (network == "polygon") {
+        rpcURL = `https://polygon-rpc.com/`
+        web3 = new Web3(rpcURL)
+    }
     const abi = [{ "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "name": "", "type": "uint8" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }]
     const contract = new web3.eth.Contract(abi, contractAddress)
     let decimals = await new Promise((resolve, error) => {

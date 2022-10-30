@@ -11,8 +11,6 @@ getTokenData = async function (contractAddress, network) {
             "Ok-Access-Key": process.env.OKLINK_API_KEY
         }
     }
-    if (network == "polygon") network = "matic"
-
     requestURL = baseURL + URLtail + "?chainShortName=" + network + "&tokenContractAddress=" + contractAddress;
 
     try {
