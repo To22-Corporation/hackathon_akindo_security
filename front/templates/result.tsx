@@ -63,11 +63,11 @@ const Result: React.FC<Props> = (props) => {
       <Box marginTop="40px" backgroundColor="#F9F9F9" padding="40px 120px">
         <Box marginTop="40px">
           {content === 0 ? (
-            <Functions />
+            <TestResult />
           ) : content === 1 ? (
             <OwnerAndTx />
           ) : content === 2 ? (
-            <TestResult />
+            <Functions />
           ) : null}
         </Box>
       </Box>
