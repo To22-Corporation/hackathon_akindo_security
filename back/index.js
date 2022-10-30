@@ -15,6 +15,7 @@ dotenv.config();
 
 const scanABI = require("./namecheck/scanabi.js");
 const scamCheck = require("./scamCheck/scanMain.js");
+const getTokenAmount = require("./transactionCheck/TotalSupplyMain.js");
 
 //ERC20テスト実行API
 app.post("/erc20Test", async (req, res) => {
@@ -40,6 +41,19 @@ app.post("/erc20Test", async (req, res) => {
     });
   });
   console.log(result)
+
+  if (result.includes("Error: NotVerified")) {
+    return res.status(401).json({
+      status: false,
+      message: "not verified",
+    });
+  }
+  if (result.includes("0 passing") && result.includes("1 failing")) {
+    return res.status(401).json({
+      status: false,
+      message: "test error",
+    });
+  }
 
   const resultResponse = {
     result_contract_name: result.includes("✔ name should return a string value"),//コントラクト名のチェック
@@ -84,13 +98,21 @@ app.post("/erc20FunctionCheck", async (req, res) => {
 
 //ERC20トランザクション確認API
 app.post("/erc20TransactionCheck", async (req, res) => {
-
+  const { contractAddress, network } = req.body;
+  if (!contractAddress || contractAddress.length != 42 || (network != "eth" && network != "bsc" && network != "polygon")) {
+    res.status(401).json({
+      status: false,
+      message: "arguments error",
+    });
+  }
+  const response = await getTokenAmount.getTokenAmount(contractAddress, network)
+  console.log(response)
+  res.json(response);
 })
 
 //スキャム歴のあるアドレス・トークンの確認
 app.post("/erc20ScamCheck", async (req, res) => {
   const { contractAddress, network } = req.body;
-  console.log(contractAddress, network)
   if (!contractAddress || contractAddress.length != 42 || (network != "eth" && network != "bsc" && network != "polygon")) {
     res.status(401).json({
       status: false,
