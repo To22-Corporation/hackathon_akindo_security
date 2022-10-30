@@ -17,7 +17,7 @@ const Result: React.FC<Props> = (props) => {
         width="100%"
         borderRadius="30px"
         backgroundColor="#F9F9F9"
-        padding="60px 120px"
+        padding="40px 80px"
       >
         <Text fontWeight="bold" fontSize="28px" textAlign="center">
           測定結果
