@@ -1,8 +1,9 @@
 const axios = require('axios');
+const getNetwork = require("./getNetwork.js");
 
-getabi = async function (contractAddress) {
-    const etherscan_key = process.env.EHTERSCAN_KEY
-    const networkURL = "https://" + process.env.NETWORK
+getabi = async function (contractAddress, network) {
+    const etherscan_key = getNetwork.getNetworkKey(network)
+    const networkURL = "https://" + getNetwork.getNetworkRoot(network)
 
     const requestURL = networkURL + `api?module=contract&action=getabi&address=${contractAddress}&apikey=${etherscan_key}`
     try {

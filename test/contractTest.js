@@ -3,19 +3,22 @@ const { ethers } = require("hardhat");
 const dotenv = require("dotenv");
 const axios = require("axios");
 const fs = require('fs').promises
+const getNetwork = require("../namecheck/getNetwork.js");
 
 dotenv.config();
 
 let rawAddresses, owner, deployedContract;
 var assert = require('chai').assert
 
-let contract_address, creatinBytecode, abi
-const etherscan_key = process.env.EHTERSCAN_KEY
-const etherscan_network = process.env.NETWORK
+let contract_address, creatinBytecode, abi, etherscan_network, etherscan_key
+
 
 describe("ERC20 test", function () {
   before(async function () {
-    contract_address = await fs.readFile("temp.txt", "utf-8")
+    const readFile = JSON.parse(await fs.readFile("temp.txt", "utf-8"))
+    contract_address = readFile.contractAddress
+    etherscan_network = getNetwork.getNetworkRoot(readFile.network)
+    etherscan_key = getNetwork.getNetworkKey(readFile.network)
     const getTransactionLogs = await axios.post(`https://${etherscan_network}api?module=account&action=txlist&address=${contract_address}&page=1&offset=1&apikey=${etherscan_key}`)
     creatinBytecode = getTransactionLogs.data.result[0].input
     //Abiを取得する
@@ -35,7 +38,6 @@ describe("ERC20 test", function () {
     await deployedContract.connect(owner).mint(rawAddresses[0].address, 100);
     //deployedContract.connect(owner).mint(100);
   })
-
 
   /* name test */
   it("name should return a string value", async function () {

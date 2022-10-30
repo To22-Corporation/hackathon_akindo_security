@@ -1,8 +1,8 @@
 const getABI = require("./etherscan_api.js");
 
-scanabi = async function (contractAddress) {
+scanabi = async function (contractAddress, network) {
     getabi = getABI["func"];
-    response = await getabi(contractAddress);
+    response = await getabi(contractAddress, network);
     responseJSON = JSON.parse(response)
 
     ERC20interface = { 'name': [], 'symbol': [], 'decimals': [], 'totalSupply': [], 'balanceOf': ['address'], 'transfer': ['address', 'uint256'], 'transferFrom': ['address', 'address', 'uint256'], 'approve': ['address', 'uint256'], 'allowance': ['address', 'address'] }
