@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 dotenv.config();
 
 const scanABI = require("./namecheck/scanabi.js");
+const scamCheck = require("./scamCheck/scanMain.js");
 
 //ERC20テスト実行API
 app.post("/erc20Test", async (req, res) => {
@@ -82,8 +83,22 @@ app.post("/erc20FunctionCheck", async (req, res) => {
 })
 
 //ERC20トランザクション確認API
-app.get("/erc20TransactionCheck", async (req, res) => {
+app.post("/erc20TransactionCheck", async (req, res) => {
 
+})
+
+//スキャム歴のあるアドレス・トークンの確認
+app.post("/erc20ScamCheck", async (req, res) => {
+  const { contractAddress, network } = req.body;
+  console.log(contractAddress, network)
+  if (!contractAddress || contractAddress.length != 42 || (network != "eth" && network != "bsc" && network != "polygon")) {
+    res.status(401).json({
+      status: false,
+      message: "arguments error",
+    });
+  }
+  const response = await scamCheck.scamCheck(contractAddress, network)
+  res.json(response);
 })
 
 
