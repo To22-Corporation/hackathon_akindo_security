@@ -1,11 +1,29 @@
-# Sample Hardhat Project
+# 💻 {Productname} : Tokyo Web3 Hackathon 2022
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+## [DemoPage](URL "aaa")
 
-Try running some of the following tasks:
+# 🚀 プロダクト概要
+
+# 🎬 ピッチ＆デモ
+
+# 💬 課題
+
+# 💡 解決方法
+
+# 💻 Devlopment
+
+## Tech stacks
+
+フロントエンド: Next.js、Typescript
+バックエンド: Node.js、Hardhat
+
+## Blockchain
+
+Ehtereum、Polygon、BNB Smart Chain
 
 ```shell
 npm install
-node scan-server.js
-curl -X GET http://localhost:8000/erc20scan
+node index.js
+curl -w '\n' 'http://localhost:3000/erc20Test' --data "contractAddress=XXXXXX&network=bsc/eth/polygon" -XPOST
+
 ```
