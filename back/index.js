@@ -118,8 +118,7 @@ app.post("/erc20TransactionCheck", async (req, res) => {
     return
   }
   const response = await getTokenAmount.getTokenAmount(contractAddress, network)
-  console.log(response)
-  res.json(response);
+  res.json({ score: response });
 })
 
 //スキャム歴のあるアドレス・トークンの確認

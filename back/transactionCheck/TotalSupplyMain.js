@@ -27,7 +27,7 @@ exports.getTokenAmount = async function main(contractAddress, network) {
             }
             // console.log(100 * top20amount / totalSupply)
             //return { "totalSupply": totalSupply, "topamount": top20amount, "topuseramount": tokenDataList.length }
-            return top20amount / totalSupply * 100
+            return Math.round(top20amount / totalSupply * 100)
         } else {
             console.log("token may not exist")
             return false
