@@ -9,8 +9,8 @@ export const Functions: NextPage = () => {
         Functions
       </Text>
       <Box>
-        <Text fontWeight="bold" fontSize="18px" marginTop="20px">
-          関数一覧
+        <Text fontWeight="bold" fontSize="24px" marginTop="20px">
+          ERC20規格外の関数の一覧
         </Text>
         <Box
           backgroundColor="#FFF"
