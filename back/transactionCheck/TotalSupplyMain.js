@@ -15,6 +15,7 @@ exports.getTokenAmount = async function main(contractAddress, network) {
 
     const totalSupply = await getTotalSupplyfunc(contractAddress, network);
     const tokenDataResult = await tokenDatafunc(lowercaseContractAddress, network);
+
     console.log(totalSupply)
     console.log(tokenDataResult)
     if (tokenDataResult) {
@@ -24,9 +25,9 @@ exports.getTokenAmount = async function main(contractAddress, network) {
             for (var i = 0; i < tokenDataList.length; i++) {
                 top20amount += convert_to_float(tokenDataList[i]["amount"])
             }
-            console.log(100 * top20amount / totalSupply)
-            console.log("top20amount" + top20amount)
-            return { "totalSupply": totalSupply, "topamount": top20amount, "topuseramount": top20amount.length }
+            // console.log(100 * top20amount / totalSupply)
+            //return { "totalSupply": totalSupply, "topamount": top20amount, "topuseramount": tokenDataList.length }
+            return top20amount / totalSupply * 100
         } else {
             console.log("token may not exist")
             return false
