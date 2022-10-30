@@ -23,20 +23,31 @@ describe("ERC20 test", function () {
     creatinBytecode = getTransactionLogs.data.result[0].input
     //Abiを取得する
     const getAbi = await axios.post(`https://${etherscan_network}/api?module=contract&action=getabi&address=${contract_address}&apikey=${etherscan_key}`)
-    abi = JSON.parse(getAbi.data.result)
+    if (getAbi.data.result == "Contract source code not verified") {
+      console.log("errorrrr")
+      throw new Error('NotVerified')
+    }
+    else {
+      abi = JSON.parse(getAbi.data.result)
+    }
   })
 
   beforeEach(async function () {
-    //コントラクトをデプロイ
-    const getContract = await ethers.getContractFactory(abi, creatinBytecode);
-    deployedContract = await getContract.deploy();
-    await deployedContract.deployed()
+    if (abi) {
+      //コントラクトをデプロイ
+      const getContract = await ethers.getContractFactory(abi, creatinBytecode);
+      deployedContract = await getContract.deploy();
+      await deployedContract.deployed()
 
-    rawAddresses = await ethers.getSigners();
-    owner = rawAddresses[0];
-    //Mintできるもののみテスト。場合によってはアドレスも必要になる場合あり。分岐を追記する
-    await deployedContract.connect(owner).mint(rawAddresses[0].address, 100);
-    //deployedContract.connect(owner).mint(100);
+      rawAddresses = await ethers.getSigners();
+      owner = rawAddresses[0];
+      //Mintできるもののみテスト。場合によってはアドレスも必要になる場合あり。分岐を追記する
+      try {
+        await deployedContract.connect(owner).mint(rawAddresses[0].address, 100);
+      } catch {
+        await deployedContract.connect(owner).mint(100);
+      }
+    }
   })
 
   /* name test */
