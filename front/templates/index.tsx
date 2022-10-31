@@ -19,7 +19,7 @@ type Props = {
 import { useForm } from "react-hook-form";
 const Index: React.FC<Props> = (props) => {
   const [radioValue, setRadioValue] = React.useState<string>("eth");
-  const { setValue, handleSubmit } = useForm({
+  const { setValue, handleSubmit, getValues } = useForm({
     defaultValues: {
       contractAddress: "0x",
       network: "eth",
@@ -38,12 +38,12 @@ const Index: React.FC<Props> = (props) => {
     >
       <form
         onSubmit={handleSubmit(() =>
-          props.onSubmit("0x09C5a4eF1629789f2F003f1e66CaC2becC9897d4", "bsc")
+          props.onSubmit(getValues("contractAddress"), radioValue)
         )}
       >
         <Box maxWidth="800px">
           <RadioGroup
-            onChange={(data) => setRadioValue(data)}
+            onChange={(value) => setRadioValue(value)}
             value={radioValue}
           >
             <Stack direction="row">
