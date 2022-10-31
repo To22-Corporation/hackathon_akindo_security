@@ -11,11 +11,8 @@ const Home: NextPage = () => {
   const { contractAddress, network } = router.query;
 
   const [result, setResult] = React.useState();
-  console.log("contractAddress: ", contractAddress);
 
   React.useEffect(() => {
-    console.log("useEffect");
-    console.log("stringfy", JSON.stringify({ contractAddress, network }));
     (async () => {
       if (contractAddress && network) {
         const response = await fetch(
@@ -31,8 +28,6 @@ const Home: NextPage = () => {
         );
         const data = await response.json();
         setResult(data);
-
-        console.log("data: ", data && data);
       }
     })();
   }, [contractAddress, network]);

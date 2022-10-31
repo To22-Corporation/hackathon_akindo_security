@@ -41,24 +41,21 @@ const Index: React.FC<Props> = (props) => {
           props.onSubmit(getValues("contractAddress"), radioValue)
         )}
       >
-        <Box maxWidth="800px">
+        <Box>
           <RadioGroup
             onChange={(value) => setRadioValue(value)}
             value={radioValue}
           >
-            <Stack direction="row">
+            <Stack direction="row" justifyContent="center">
               <Radio value="eth">ethereum</Radio>
               <Radio value="polygon">polygon</Radio>
               <Radio value="bsc">bsc</Radio>
             </Stack>
           </RadioGroup>
         </Box>
-        <Center>
+        <Center marginTop="16px">
           <Input
-            onChange={(data) => {
-              console.log("data :", data.target.value);
-              setValue("contractAddress", data.target.value);
-            }}
+            onChange={(data) => setValue("contractAddress", data.target.value)}
             maxWidth="800px"
             id="contractAddress"
             size="md"
