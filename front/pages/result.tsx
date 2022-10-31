@@ -11,10 +11,27 @@ const Home: NextPage = () => {
   const { contractAddress, network } = router.query;
 
   const [result, setResult] = React.useState();
+  const [isScam, setIsScam] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     (async () => {
       if (contractAddress && network) {
+        const checkIsScamListResponse = await fetch(
+          "https://hackathon-security.herokuapp.com/erc20ScamCheck",
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ contractAddress, network }),
+          }
+        );
+        const isScam = await checkIsScamListResponse.json();
+        setIsScam(isScam.result);
+        if (isScam.result) {
+          return;
+        }
         const response = await fetch(
           "https://hackathon-security.herokuapp.com/erc20Test",
           {
@@ -26,13 +43,14 @@ const Home: NextPage = () => {
             body: JSON.stringify({ contractAddress, network }),
           }
         );
+
         const data = await response.json();
         setResult(data);
       }
     })();
   }, [contractAddress, network]);
 
-  return <ResultTemplate data={result} />;
+  return <ResultTemplate data={result} isScam={isScam} />;
 };
 
 export default Home;
