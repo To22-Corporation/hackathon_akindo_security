@@ -10,18 +10,19 @@ import {
   RadioGroup,
   Stack,
 } from "@chakra-ui/react";
+import Link from "next/link";
 
 type Props = {
-  onSubmit: () => void;
+  onSubmit: (contractAddress: string, network: string) => void;
 };
 
 import { useForm } from "react-hook-form";
 const Index: React.FC<Props> = (props) => {
-  const [radioValue, setRadioValue] = React.useState<string>("ethereum");
+  const [radioValue, setRadioValue] = React.useState<string>("eth");
   const { setValue, handleSubmit } = useForm({
     defaultValues: {
       contractAddress: "0x",
-      chain: "ethereum",
+      network: "eth",
     },
   });
 
@@ -35,14 +36,18 @@ const Index: React.FC<Props> = (props) => {
       //     lg: "blue.200",
       //   }}
     >
-      <form onSubmit={handleSubmit(props.onSubmit)}>
+      <form
+        onSubmit={handleSubmit(() =>
+          props.onSubmit("0x09C5a4eF1629789f2F003f1e66CaC2becC9897d4", "bsc")
+        )}
+      >
         <Box maxWidth="800px">
           <RadioGroup
             onChange={(data) => setRadioValue(data)}
             value={radioValue}
           >
             <Stack direction="row">
-              <Radio value="ethereum">ethereum</Radio>
+              <Radio value="eth">ethereum</Radio>
               <Radio value="polygon">polygon</Radio>
               <Radio value="bsc">bsc</Radio>
             </Stack>
@@ -58,9 +63,9 @@ const Index: React.FC<Props> = (props) => {
             id="contractAddress"
             size="md"
             placeholder="コントラクトアドレスを入力してください"
-            isInvalid
             errorBorderColor="red.300"
           ></Input>
+
           <Button type="submit" marginLeft="16px" colorScheme="blue">
             分析
           </Button>
