@@ -3,9 +3,10 @@ import { Box, Text, Flex, Image } from "@chakra-ui/react";
 
 type Props = {
   txAmount?: number;
-  userAmount: number;
+  userAmount?: number;
+  data: any;
 };
-export const OwnerAndTx: NextPage = () => {
+export const OwnerAndTx: React.FC<Props> = (props) => {
   return (
     <Box>
       <Text fontWeight="bold" fontSize="28px" textAlign="center">

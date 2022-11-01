@@ -10,14 +10,36 @@ const Home: NextPage = () => {
   const router = useRouter();
   const { contractAddress, network } = router.query;
 
-  const [result, setResult] = React.useState();
+  const [erc20TestResult, setErc20TestResult] = React.useState();
+  const [erc20TransactionCheckData, setErc20TransactionCheckData] =
+    React.useState();
+  const [erc20FunctionCheck, setErc20FunctionCheck] = React.useState();
   const [isScam, setIsScam] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     (async () => {
       if (contractAddress && network) {
-        const checkIsScamListResponse = await fetch(
-          "https://hackathon-security.herokuapp.com/erc20ScamCheck",
+        // const checkIsScamListResponse = await fetch(
+        //   "https://hackathon-security.herokuapp.com/erc20ScamCheck",
+        //   {
+        //     method: "POST",
+        //     mode: "cors",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({ contractAddress, network }),
+        //   }
+        // );
+        // const isScam = await checkIsScamListResponse.json();
+        // setIsScam(isScam.result);
+
+        // if (isScam.result) {
+        //   return;
+        // }
+
+        // トランザクション履歴確認
+        const erc20TransactionCheckResponse = await fetch(
+          "https://hackathon-security.herokuapp.com/erc20TransactionCheck",
           {
             method: "POST",
             mode: "cors",
@@ -27,12 +49,9 @@ const Home: NextPage = () => {
             body: JSON.stringify({ contractAddress, network }),
           }
         );
-        const isScam = await checkIsScamListResponse.json();
-        setIsScam(isScam.result);
-        if (isScam.result) {
-          return;
-        }
-        const response = await fetch(
+
+        // テスト結果確認
+        const erc20TestResponse = await fetch(
           "https://hackathon-security.herokuapp.com/erc20Test",
           {
             method: "POST",
@@ -44,13 +63,39 @@ const Home: NextPage = () => {
           }
         );
 
-        const data = await response.json();
-        setResult(data);
+        // 関数リスト確認
+        const erc20FunctionCheck = await fetch(
+          "https://hackathon-security.herokuapp.com/erc20FunctionCheck",
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ contractAddress, network }),
+          }
+        );
+
+        const erc20TransactionCheckData =
+          await erc20TransactionCheckResponse.json();
+        const erc20TestResponseData = await erc20TestResponse.json();
+        const erc20FunctionCheckData = await erc20FunctionCheck.json();
+
+        setErc20TransactionCheckData(erc20TransactionCheckData);
+        setErc20TestResult(erc20TestResponseData);
+        setErc20FunctionCheck(erc20FunctionCheckData);
       }
     })();
   }, [contractAddress, network]);
 
-  return <ResultTemplate data={result} isScam={isScam} />;
+  return (
+    <ResultTemplate
+      isScam={isScam}
+      transactionData={erc20TransactionCheckData}
+      testData={erc20TestResult}
+      functionCheckData={erc20FunctionCheck}
+    />
+  );
 };
 
 export default Home;

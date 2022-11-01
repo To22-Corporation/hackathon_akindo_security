@@ -4,8 +4,10 @@ import { Box, Text, Flex, Image } from "@chakra-ui/react";
 
 const testSuccessItemList = ["Folder", "Graph", "Search", "Wallet"];
 const testItemList = ["Calendar", "Scan", "Message", "Activity"];
-
-export const TestResult: NextPage = () => {
+type Props = {
+  data: any;
+};
+export const TestResult: React.FC<Props> = (props) => {
   const [content, setContent] = React.useState<string>("");
   return (
     <Box>
