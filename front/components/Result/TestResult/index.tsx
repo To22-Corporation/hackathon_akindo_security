@@ -12,8 +12,7 @@ export const TestResult: React.FC<Props> = (props) => {
   const testItems = props.data && Object.keys(props.data);
 
   const getTestResult = (key: string) => {
-    console.log("keyResult: ", props.data[key]);
-    // return false;
+    if (key === "") return false;
     return props.data[key];
   };
   console.log("testItems ;", testItems);
@@ -22,6 +21,9 @@ export const TestResult: React.FC<Props> = (props) => {
     <Box>
       <Text fontWeight="bold" fontSize="28px" textAlign="center">
         Smart Contract Test Result
+      </Text>
+      <Text fontSize="18px" textAlign="center" marginTop="12px">
+        テスト結果が正常な場合色付けされます
       </Text>
       <Box>
         <Flex justifyContent="center">
@@ -49,7 +51,7 @@ export const TestResult: React.FC<Props> = (props) => {
                       <Image src={`/icon/testIcon/${item}.svg`} />
                     )}
                     <Text
-                      fontSize="16px"
+                      fontSize="14px"
                       fontWeight="bold"
                       textAlign="center"
                       marginTop="8px"
@@ -71,13 +73,19 @@ export const TestResult: React.FC<Props> = (props) => {
             <Box
               backgroundColor="white"
               borderRadius="18px"
-              padding="20px"
+              padding="40px 20px"
               height="100%"
               boxShadow="0px 4px 4px rgba(0, 0.1, 0, 0.15)"
             >
               <Image
                 margin="0 auto"
-                src={`/icon/testSuccessIcon/${content}.svg`}
+                src={
+                  !!content
+                    ? getTestResult(content)
+                      ? `/icon/testSuccessIcon/${content}.svg`
+                      : `/icon/testIcon/${content}.svg`
+                    : `/icon/testIcon/result_balance.svg`
+                }
                 boxSize="120px"
               />
               <Text

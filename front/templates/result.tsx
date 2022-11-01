@@ -13,11 +13,9 @@ import {
   CircularProgress,
   CircularProgressLabel,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
 import { Functions } from "../components/Result/Functions";
 import { OwnerAndTx } from "../components/Result/OwnerAndTx";
 import { TestResult } from "../components/Result/TestResult";
-import type { StyleFunctionProps } from "@chakra-ui/styled-system";
 
 type Props = {
   isScam: boolean;
@@ -31,10 +29,12 @@ const Result: React.FC<Props> = (props) => {
 
   const getCircularColor = (score: number): string | undefined => {
     if (score < 30) {
-      return "red.400";
-    } else if (score < 70) {
+      return "red.500";
+    }
+    if (30 < score && score < 70) {
       return "yellow.300";
-    } else if (score > 70) {
+    }
+    if (score > 70) {
       return "green.400";
     }
   };
@@ -49,7 +49,7 @@ const Result: React.FC<Props> = (props) => {
         width="100%"
         borderRadius="30px"
         backgroundColor="#F9F9F9"
-        padding="40px 80px"
+        padding="20px 80px"
         marginTop="16px"
       >
         <Image src="/icon/scam.svg" boxSize="80px" margin="0 auto" />
@@ -128,8 +128,8 @@ const Result: React.FC<Props> = (props) => {
               textAlign="center"
             >
               <CircularProgress
-                value={props.functionCheckData?.score}
-                color={getCircularColor(props.functionCheckData?.score)}
+                value={props.transactionData?.score}
+                color={getCircularColor(props.transactionData?.score)}
                 size="160px"
               >
                 <CircularProgressLabel>
