@@ -19,25 +19,25 @@ const Home: NextPage = () => {
   React.useEffect(() => {
     (async () => {
       if (contractAddress && network) {
-        try {
-          const checkIsScamListResponse = await fetch(
-            "https://hackathon-security.herokuapp.com/erc20ScamCheck",
-            {
-              method: "POST",
-              mode: "cors",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ contractAddress, network }),
-            }
-          );
-          const isScam = await checkIsScamListResponse.json();
-          setIsScam(isScam.result);
-        } catch (e) {}
+        // try {
+        //   const checkIsScamListResponse = await fetch(
+        //     "https://hackathon-security.herokuapp.com/erc20ScamCheck",
+        //     {
+        //       method: "POST",
+        //       mode: "cors",
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //       },
+        //       body: JSON.stringify({ contractAddress, network }),
+        //     }
+        //   );
+        //   const isScam = await checkIsScamListResponse.json();
+        //   setIsScam(isScam.result);
+        // } catch (e) {}
 
-        if (isScam) {
-          return;
-        }
+        // if (isScam) {
+        //   return;
+        // }
 
         // トランザクション履歴確認
         try {
@@ -56,7 +56,7 @@ const Home: NextPage = () => {
             await erc20TransactionCheckResponse.json();
           setErc20TransactionCheckData(erc20TransactionCheckData);
         } catch (e) {
-          setErc20TransactionCheckData(e as any);
+          setErc20TransactionCheckData(null as any);
         }
 
         // テスト結果確認
@@ -75,7 +75,7 @@ const Home: NextPage = () => {
           const erc20TestResponseData = await erc20TestResponse.json();
           setErc20TestResult(erc20TestResponseData);
         } catch (e) {
-          setErc20TestResult("" as any);
+          setErc20TestResult(null as any);
         }
 
         // 関数リスト確認
@@ -94,7 +94,7 @@ const Home: NextPage = () => {
           const erc20FunctionCheckData = await erc20FunctionCheck.json();
           setErc20FunctionCheck(erc20FunctionCheckData);
         } catch (e) {
-          setErc20FunctionCheck(e as any);
+          setErc20FunctionCheck(null as any);
         }
       }
     })();

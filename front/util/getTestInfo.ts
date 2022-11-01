@@ -53,9 +53,8 @@ export const getTestInfo = (testName: string): TestObject | undefined => {
       };
     case "result_not_approve_amount":
       return {
-        title:
-          "トークンに対してApproveしていないときは転送できるトークン量は0に設定されています",
-        text: "",
+        title: "トークンapproveテスト",
+        text: "トークンに対してApproveしていないときは転送できるトークン量は0に設定されています",
       };
     case "result_approve_user_1":
       return {

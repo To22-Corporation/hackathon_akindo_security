@@ -108,11 +108,11 @@ const Result: React.FC<Props> = (props) => {
             >
               <CircularProgress
                 size="160px"
-                value={props.testData.score}
-                color={getCircularColor(props.testData.score)}
+                value={props.testData?.score}
+                color={getCircularColor(props.testData?.score)}
               >
                 <CircularProgressLabel>
-                  {props.testData.score}%
+                  {props.testData?.score}%
                 </CircularProgressLabel>
               </CircularProgress>
 
@@ -128,12 +128,12 @@ const Result: React.FC<Props> = (props) => {
               textAlign="center"
             >
               <CircularProgress
-                value={props.functionCheckData.score}
-                color={getCircularColor(props.functionCheckData.score)}
+                value={props.functionCheckData?.score}
+                color={getCircularColor(props.functionCheckData?.score)}
                 size="160px"
               >
                 <CircularProgressLabel>
-                  {props.transactionData.score}%
+                  {props.transactionData?.score}%
                 </CircularProgressLabel>
               </CircularProgress>
               <Text marginTop="60px" alignItems="center" fontWeight="bold">
@@ -149,11 +149,11 @@ const Result: React.FC<Props> = (props) => {
             >
               <CircularProgress
                 size="160px"
-                value={props.functionCheckData.score}
-                color={getCircularColor(props.functionCheckData.score)}
+                value={props.functionCheckData?.score}
+                color={getCircularColor(props.functionCheckData?.score)}
               >
                 <CircularProgressLabel>
-                  {props.functionCheckData.score}%
+                  {props.functionCheckData?.score}%
                 </CircularProgressLabel>
               </CircularProgress>
 

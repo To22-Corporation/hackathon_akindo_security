@@ -3,42 +3,21 @@ import type { NextPage } from "next";
 import { Box, Text, Flex, Image } from "@chakra-ui/react";
 import { getTestInfo } from "../../../util/getTestInfo";
 
-type TestItem = {
-  result_approve_user_1: boolean;
-  result_approve_user_2: boolean;
-  result_approve_user_3: boolean;
-  result_balance: boolean;
-  result_cant_transfer_by_owner: boolean;
-  result_cant_transfer_by_user: boolean;
-  result_contract_name: boolean;
-  result_decimal: boolean;
-  result_not_approve_0: boolean;
-  result_not_approve_amount: boolean;
-  result_symbol_name: boolean;
-  result_transfer_1: boolean;
-  result_transfer_2: boolean;
-  result_transferfrom_owner: boolean;
-  result_transferfrom_user: boolean;
-};
-
 type Props = {
   data: Record<string, boolean>;
 };
 
 export const TestResult: React.FC<Props> = (props) => {
   const [content, setContent] = React.useState<string>("");
-  const testItems = Object.keys(props.data);
+  const testItems = props.data && Object.keys(props.data);
 
   const getTestResult = (key: string) => {
-    console.log("key: ", testItems[0]);
     console.log("keyResult: ", props.data[key]);
-
+    // return false;
     return props.data[key];
   };
   console.log("testItems ;", testItems);
 
-  console.log("test items 0", testItems[0]);
-  console.log("test items 0", getTestResult(testItems[0]));
   return (
     <Box>
       <Text fontWeight="bold" fontSize="28px" textAlign="center">
@@ -53,31 +32,33 @@ export const TestResult: React.FC<Props> = (props) => {
             borderRight="1px solid #D2D1D1"
           >
             <Flex maxWidth="600px" flexWrap="wrap">
-              {testItems.map((item) => (
-                <Box
-                  onClick={() => setContent(item)}
-                  width="90px"
-                  padding="8px"
-                  cursor="pointer"
-                  marginTop="12px"
-                  key={item}
-                  marginLeft="60px"
-                >
-                  {getTestResult(item) ? (
-                    <Image src={`/icon/testSuccessIcon/${item}.svg`} />
-                  ) : (
-                    <Image src={`/icon/testIcon/Activity.svg`} />
-                  )}
-                  <Text
-                    fontSize="16px"
-                    fontWeight="bold"
-                    textAlign="center"
-                    marginTop="8px"
+              {testItems?.map((item) =>
+                item === "score" ? null : (
+                  <Box
+                    onClick={() => setContent(item)}
+                    width="90px"
+                    padding="8px"
+                    cursor="pointer"
+                    marginTop="12px"
+                    key={item}
+                    marginLeft="60px"
                   >
-                    {getTestInfo(item)?.title}
-                  </Text>
-                </Box>
-              ))}
+                    {getTestResult(item) ? (
+                      <Image src={`/icon/testSuccessIcon/${item}.svg`} />
+                    ) : (
+                      <Image src={`/icon/testIcon/${item}.svg`} />
+                    )}
+                    <Text
+                      fontSize="16px"
+                      fontWeight="bold"
+                      textAlign="center"
+                      marginTop="8px"
+                    >
+                      {getTestInfo(item)?.title}
+                    </Text>
+                  </Box>
+                )
+              )}
             </Flex>
           </Box>
           <Box
@@ -85,6 +66,7 @@ export const TestResult: React.FC<Props> = (props) => {
             borderRadius="18px"
             marginTop="20px"
             width="40%"
+            maxWidth="400px"
           >
             <Box
               backgroundColor="white"
