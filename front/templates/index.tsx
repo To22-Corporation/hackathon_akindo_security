@@ -10,18 +10,19 @@ import {
   RadioGroup,
   Stack,
 } from "@chakra-ui/react";
+import Link from "next/link";
 
 type Props = {
-  onSubmit: () => void;
+  onSubmit: (contractAddress: string, network: string) => void;
 };
 
 import { useForm } from "react-hook-form";
 const Index: React.FC<Props> = (props) => {
-  const [radioValue, setRadioValue] = React.useState<string>("ethereum");
-  const { setValue, handleSubmit } = useForm({
+  const [radioValue, setRadioValue] = React.useState<string>("eth");
+  const { setValue, handleSubmit, getValues } = useForm({
     defaultValues: {
       contractAddress: "0x",
-      chain: "ethereum",
+      network: "eth",
     },
   });
 
@@ -35,32 +36,33 @@ const Index: React.FC<Props> = (props) => {
       //     lg: "blue.200",
       //   }}
     >
-      <form onSubmit={handleSubmit(props.onSubmit)}>
-        <Box maxWidth="800px">
+      <form
+        onSubmit={handleSubmit(() =>
+          props.onSubmit(getValues("contractAddress"), radioValue)
+        )}
+      >
+        <Box>
           <RadioGroup
-            onChange={(data) => setRadioValue(data)}
+            onChange={(value) => setRadioValue(value)}
             value={radioValue}
           >
-            <Stack direction="row">
-              <Radio value="ethereum">ethereum</Radio>
+            <Stack direction="row" justifyContent="center">
+              <Radio value="eth">ethereum</Radio>
               <Radio value="polygon">polygon</Radio>
               <Radio value="bsc">bsc</Radio>
             </Stack>
           </RadioGroup>
         </Box>
-        <Center>
+        <Center marginTop="16px">
           <Input
-            onChange={(data) => {
-              console.log("data :", data.target.value);
-              setValue("contractAddress", data.target.value);
-            }}
+            onChange={(data) => setValue("contractAddress", data.target.value)}
             maxWidth="800px"
             id="contractAddress"
             size="md"
             placeholder="コントラクトアドレスを入力してください"
-            isInvalid
             errorBorderColor="red.300"
           ></Input>
+
           <Button type="submit" marginLeft="16px" colorScheme="blue">
             分析
           </Button>

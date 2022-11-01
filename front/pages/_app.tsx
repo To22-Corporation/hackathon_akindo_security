@@ -3,10 +3,26 @@ import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 import Head from "next/head";
 import { Header } from "../components/Header";
+import { extendTheme } from "@chakra-ui/react";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const theme = extendTheme({
+    components: {
+      CircularProgress: {
+        // 2. We can add a new button size or extend existing
+        sizes: {
+          xl: {
+            h: "56px",
+            fontSize: "lg",
+            px: "32px",
+          },
+        },
+      },
+    },
+  });
+
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Header />
       <Head>
         <title>Create Next App</title>

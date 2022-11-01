@@ -1,13 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import { SubmitHandler } from "react-hook-form";
 import IndexTemplate from "../templates";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
-  const onSubmit = () => {
-    // バックエンドへpost
+  const router = useRouter();
+  const onSubmit = (contractAddress: string, network: string) => {
+    router.push({
+      pathname: "/result/",
+      query: { contractAddress, network },
+    });
   };
   return <IndexTemplate onSubmit={onSubmit} />;
 };
