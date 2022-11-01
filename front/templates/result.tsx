@@ -29,6 +29,15 @@ type Props = {
 const Result: React.FC<Props> = (props) => {
   const [content, setContent] = React.useState<number>(0);
 
+  const getCircularColor = (score: number): string | undefined => {
+    if (score < 30) {
+      return "red.400";
+    } else if (score < 70) {
+      return "yellow.300";
+    } else if (score > 70) {
+      return "green.400";
+    }
+  };
   console.log("isScam :", props.isScam);
   console.log("transactionData :", props.transactionData);
   console.log("testData :", props.testData);
@@ -100,7 +109,7 @@ const Result: React.FC<Props> = (props) => {
               <CircularProgress
                 size="160px"
                 value={props.testData.score}
-                color="green.400"
+                color={getCircularColor(props.testData.score)}
               >
                 <CircularProgressLabel>
                   {props.testData.score}%
@@ -120,15 +129,13 @@ const Result: React.FC<Props> = (props) => {
             >
               <CircularProgress
                 value={props.functionCheckData.score}
-                color="green.400"
+                color={getCircularColor(props.functionCheckData.score)}
                 size="160px"
               >
                 <CircularProgressLabel>
-                  {props.functionCheckData.score}%
+                  {props.transactionData.score}%
                 </CircularProgressLabel>
               </CircularProgress>
-
-              {props.transactionData.score}
               <Text marginTop="60px" alignItems="center" fontWeight="bold">
                 Owner {"&"} Transaction
               </Text>
@@ -143,7 +150,7 @@ const Result: React.FC<Props> = (props) => {
               <CircularProgress
                 size="160px"
                 value={props.functionCheckData.score}
-                color="green.400"
+                color={getCircularColor(props.functionCheckData.score)}
               >
                 <CircularProgressLabel>
                   {props.functionCheckData.score}%
