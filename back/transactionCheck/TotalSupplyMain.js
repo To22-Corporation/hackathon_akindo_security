@@ -27,7 +27,14 @@ exports.getTokenAmount = async function main(contractAddress, network) {
             }
             // console.log(100 * top20amount / totalSupply)
             //return { "totalSupply": totalSupply, "topamount": top20amount, "topuseramount": tokenDataList.length }
-            return 100 - Math.round(top20amount / totalSupply * 100)
+            // 上位20%が保有している割合
+            const top20SumRate = Math.round(top20amount / totalSupply * 100)
+            if (top20SumRate < 50) return 100
+            else if (top20SumRate < 60) return 80
+            else if (top20SumRate < 70) return 60
+            else if (top20SumRate < 80) return 40
+            else if (top20SumRate < 90) return 20
+            else return 100 - top20SumRate
         } else {
             console.log("token may not exist")
             return false
