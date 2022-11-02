@@ -7,9 +7,7 @@ getContractInWebsite = async function (URL) {
     console.log(process.env.DYNO)
     const LAUNCH_OPTION = process.env.DYNO ? { args: ['--no-sandbox'] } : { headless: false };
     console.log(LAUNCH_OPTION)
-    const browser = await puppeteer.launch({
-        LAUNCH_OPTION
-    });
+    const browser = await puppeteer.launch(LAUNCH_OPTION);
     const page = await browser.newPage();
     // await page.goto(URL);
 
