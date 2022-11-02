@@ -16,6 +16,7 @@ dotenv.config();
 const scanABI = require("./namecheck/scanabi.js");
 const scamCheck = require("./scamCheck/scanMain.js");
 const getTokenAmount = require("./transactionCheck/TotalSupplyMain.js");
+const scanHtml = require("./namecheck/htmlCheck.js");
 
 //ERC20テスト実行API
 app.post("/erc20Test", async (req, res) => {
@@ -132,6 +133,13 @@ app.post("/erc20ScamCheck", async (req, res) => {
     return
   }
   const response = await scamCheck.scamCheck(contractAddress, network)
+  res.json(response);
+})
+
+//HTML上のコントラクトアドレスを抽出するAPI
+app.post("/getAddressOnHtml", async (req, res) => {
+  const { URL } = req.body;
+  const response = await scanHtml.func(URL)
   res.json(response);
 })
 
