@@ -92,7 +92,7 @@ const Result: React.FC<Props> = (props) => {
         width="100%"
         borderRadius="30px"
         backgroundColor="#F9F9F9"
-        padding="40px 80px"
+        padding="20px 80px"
       >
         <Text fontWeight="bold" fontSize="28px" textAlign="center">
           測定結果
@@ -103,18 +103,26 @@ const Result: React.FC<Props> = (props) => {
             <Box
               onClick={() => setContent(0)}
               cursor="pointer"
-              width="200px"
+              width="260px"
+              backgroundColor={content === 0 ? "gray.100" : "white"}
               textAlign="center"
+              padding="40px"
+              borderRadius="18px"
+              boxShadow="0px 4px 4px rgba(0, 0.1, 0, 0.15)"
             >
-              <CircularProgress
-                size="160px"
-                value={props.testData?.score}
-                color={getCircularColor(props.testData?.score)}
-              >
-                <CircularProgressLabel>
-                  {props.testData?.score}%
-                </CircularProgressLabel>
-              </CircularProgress>
+              {props.testData ? (
+                <CircularProgress
+                  size="160px"
+                  value={props.testData?.score}
+                  color={getCircularColor(props.testData?.score)}
+                >
+                  <CircularProgressLabel>
+                    {props.testData?.score}%
+                  </CircularProgressLabel>
+                </CircularProgress>
+              ) : (
+                <CircularProgress isIndeterminate color="green.400" />
+              )}
 
               <Text marginTop="60px" alignItems="center" fontWeight="bold">
                 SmartContract Test Result
@@ -124,18 +132,27 @@ const Result: React.FC<Props> = (props) => {
             <Box
               onClick={() => setContent(1)}
               cursor="pointer"
-              width="200px"
               textAlign="center"
+              width="260px"
+              backgroundColor={content === 1 ? "gray.100" : "white"}
+              padding="40px"
+              borderRadius="18px"
+              boxShadow="0px 4px 4px rgba(0, 0.1, 0, 0.15)"
             >
-              <CircularProgress
-                value={props.transactionData?.score}
-                color={getCircularColor(props.transactionData?.score)}
-                size="160px"
-              >
-                <CircularProgressLabel>
-                  {props.transactionData?.score}%
-                </CircularProgressLabel>
-              </CircularProgress>
+              {props.transactionData ? (
+                <CircularProgress
+                  value={props.transactionData?.score}
+                  color={getCircularColor(props.transactionData?.score)}
+                  size="160px"
+                >
+                  <CircularProgressLabel>
+                    {props.transactionData?.score}%
+                  </CircularProgressLabel>
+                </CircularProgress>
+              ) : (
+                <CircularProgress isIndeterminate color="green.400" />
+              )}
+
               <Text marginTop="60px" alignItems="center" fontWeight="bold">
                 Owner {"&"} Transaction
               </Text>
@@ -144,18 +161,26 @@ const Result: React.FC<Props> = (props) => {
             <Box
               onClick={() => setContent(2)}
               cursor="pointer"
-              width="200px"
               textAlign="center"
+              width="260px"
+              backgroundColor={content === 2 ? "gray.100" : "white"}
+              padding="40px"
+              borderRadius="18px"
+              boxShadow="0px 4px 4px rgba(0, 0.1, 0, 0.15)"
             >
-              <CircularProgress
-                size="160px"
-                value={props.functionCheckData?.score}
-                color={getCircularColor(props.functionCheckData?.score)}
-              >
-                <CircularProgressLabel>
-                  {props.functionCheckData?.score}%
-                </CircularProgressLabel>
-              </CircularProgress>
+              {props.functionCheckData ? (
+                <CircularProgress
+                  size="160px"
+                  value={props.functionCheckData?.score}
+                  color={getCircularColor(props.functionCheckData?.score)}
+                >
+                  <CircularProgressLabel>
+                    {props.functionCheckData?.score}%
+                  </CircularProgressLabel>
+                </CircularProgress>
+              ) : (
+                <CircularProgress isIndeterminate color="green.400" />
+              )}
 
               <Text marginTop="60px" alignItems="center" fontWeight="bold">
                 Function List

@@ -11,16 +11,22 @@ export const Header: NextPage = () => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Box boxSize="60px">
+      <Box width="160px">
         <Logo />
       </Box>
       <Flex>
         <Text fontSize="18px" marginLeft="16px" fontWeight="bold">
           <Link href="/">Top</Link>
         </Text>
-        <Text fontSize="18px" marginLeft="16px" fontWeight="bold">
-          LP
-        </Text>
+        <a
+          href="https://securitywise.studio.site/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Text fontSize="18px" marginLeft="16px" fontWeight="bold">
+            LP
+          </Text>
+        </a>
       </Flex>
     </Flex>
   );
