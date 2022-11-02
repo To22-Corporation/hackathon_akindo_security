@@ -1,8 +1,11 @@
-var puppeteer = require("puppeteer");
+const puppeteer = require('puppeteer');
+
+// Heroku環境かどうかの判断
+const LAUNCH_OPTION = process.env.DYNO ? { args: ['--no-sandbox', '--disable-setuid-sandbox'] } : { headless: false };
 
 getContractInWebsite = async function (URL) {
     const browser = await puppeteer.launch({
-        headless: true
+        LAUNCH_OPTION
     });
     const page = await browser.newPage();
     // await page.goto(URL);
