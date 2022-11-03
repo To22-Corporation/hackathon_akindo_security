@@ -1,4 +1,3 @@
-let Data
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   const checkList = [];
   if (changeInfo.status === "complete") {
@@ -18,15 +17,17 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
         body: JSON.stringify({ URL: url }),
       };
 
-      // paramを付ける以外はGETと同じ
       fetch("https://hackathon-security.herokuapp.com/getAddressOnHtml", param)
         .then((response) => response.json())
         .then((data) => {
-          if (data) {
-            console.log(data);
-            Data = data
-            chrome.scripting.executeScript({
-              function: showAlert
+          if (data[0]) {
+            console.log(data)
+            chrome.windows.create({
+              url: "https://hackathon-akindo-security.vercel.app/" + `?address=${data[0]}`,
+              focused: true,
+              type: 'popup',
+              height: 600,
+              width: 500
             });
           }
         });
