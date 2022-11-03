@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer');
+import * as puppeteer from 'puppeteer';
 
 
 
@@ -7,7 +7,8 @@ getContractInWebsite = async function (URL) {
     // const LAUNCH_OPTION = process.env.DYNO ? { args: ['--no-sandbox'] } : { headless: false };
     console.log(1)
     const browser = await puppeteer.launch({
-        args: ['--no-sandbox']
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
     })
 
     console.log(2)
