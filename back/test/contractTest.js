@@ -24,7 +24,6 @@ describe("ERC20 test", function () {
     //Abiを取得する
     const getAbi = await axios.post(`https://${etherscan_network}/api?module=contract&action=getabi&address=${contract_address}&apikey=${etherscan_key}`)
     if (getAbi.data.result == "Contract source code not verified") {
-      console.log("errorrrr")
       throw new Error('NotVerified')
     }
     else {
