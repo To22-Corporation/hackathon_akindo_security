@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 const Popup = () => {
   const [count, setCount] = useState(0);
   const [currentURL, setCurrentURL] = useState<string>();
+  const [currentData, setCurrentData] = useState<string>();
 
   useEffect(() => {
     chrome.action.setBadgeText({ text: count.toString() });
