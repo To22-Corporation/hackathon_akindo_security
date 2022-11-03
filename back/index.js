@@ -139,6 +139,14 @@ app.post("/erc20ScamCheck", async (req, res) => {
 //HTML上のコントラクトアドレスを抽出するAPI
 app.post("/getAddressOnHtml", async (req, res) => {
   const { URL } = req.body;
+  console.log(URL)
+  if (!URL || URL.indexOf('http') == -1) {
+    res.status(400).json({
+      status: false,
+      message: "param error",
+    });
+    return
+  }
   const response = await scanHtml.func(URL)
   res.json(response);
 })
