@@ -2,16 +2,17 @@ const puppeteer = require('puppeteer');
 
 getContractInWebsite = async function (URL) {
     // Heroku環境かどうかの判断
-    // const LAUNCH_OPTION = process.env.DYNO ? { args: ['--no-sandbox'] } : { headless: false };
-    console.log(1)
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    })
+    const LAUNCH_OPTION = process.env.DYNO ?
+        {
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            ignoreDefaultArgs: ['--disable-extensions']
+        } :
+        { headless: false };
+    const browser = await puppeteer.launch(
+        LAUNCH_OPTION
+    )
 
-    console.log(2)
     const page = await browser.newPage();
-    console.log(3)
     // await page.goto(URL);
 
     // Consoleに出力される文字列を取得。Badge等ではHTMLの要素にはAddressないけど、Consoleに出力されているからそれを検知できるように。
@@ -26,7 +27,6 @@ getContractInWebsite = async function (URL) {
             consoleOutput.push(message.toString())
         }
     });
-    console.log(4)
 
     //HTML要素に含まれるAddressを取得
     await page
@@ -34,8 +34,6 @@ getContractInWebsite = async function (URL) {
             waitUntil: "networkidle0",
         })
         .catch((err) => console.log("error loading url", err));
-    console.log(5)
-
 
     var template = await page.content()
 
@@ -43,7 +41,6 @@ getContractInWebsite = async function (URL) {
     while ((result = regex.exec(template))) {
         indices.push(result.index);
     }
-    // console.log(indices)
 
     //Addressを一つのArrayにまとめなおす
     allAddress = []
