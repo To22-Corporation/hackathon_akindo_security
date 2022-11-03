@@ -20,7 +20,8 @@ scanabi = async function (contractAddress, network) {
         "freeze": false,
         "pause": false,
         "blacklist": false,
-        "whitelist": false
+        "whitelist": false,
+        "upgradable": false
     }
 
     for (var i = 0; i < ABIlength; i++) {
@@ -35,8 +36,14 @@ scanabi = async function (contractAddress, network) {
             }
             // warningDictの名前が含まれていた場合はTrueにする
             for (let key of Object.keys(warningDict)) {
-                if (eachFunctionName.toLowerCase().includes(key)) {
-                    warningDict[key] = true
+                if (key == !"upgradable"){
+                    if (eachFunctionName.toLowerCase().includes(key)) {
+                        warningDict[key] = true
+                    }                     
+                } else {
+                    if (eachFunctionName.toLowerCase().includes("implementation")) {
+                        warningDict[key] = true
+                    }     
                 }
             }
             // 型がFunction以外の場合
