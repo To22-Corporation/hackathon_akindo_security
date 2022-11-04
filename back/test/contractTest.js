@@ -14,6 +14,39 @@ let contract_address, creatinBytecode, abi, etherscan_network, etherscan_key
 
 
 describe("ERC20 test", function () {
+  getConstructorArguments = async (input,abi) => {
+    input = input.toLowerCase().replace("0x", "");
+
+    const CODECOPY_REGEX = /(?:5b)?(?:60([a-z0-9]{2})|61([a-z0-9_]{4})|62([a-z0-9_]{6}))80(?:60([a-z0-9]{2})|61([a-z0-9_]{4})|62([a-z0-9_]{6}))6000396000f3fe/gm;
+
+    m = CODECOPY_REGEX.exec(input)
+    
+    if (m == null || m == undefined) {
+      throw Error("Input is not a standard deployement bytecode");
+    }
+
+    // const CONSTRUCTOR_OFFSET = 0
+    const CONTRACT_LENGTH = parseInt(m[1] || m[2] || m[3], 16) * 2
+    const CONTRACT_OFFSET = parseInt(m[4] || m[5] || m[6], 16) * 2
+    
+    // Also get embedded metadata from the contract's code : located at the end of it
+    // const METADATA_LENGTH = parseInt(input.slice(CONTRACT_OFFSET + CONTRACT_LENGTH - 4, CONTRACT_OFFSET + CONTRACT_LENGTH), 16) * 2 + 4;
+
+    // return {
+    //  constructor: input.slice(CONSTRUCTOR_OFFSET, CONTRACT_OFFSET),
+    //  contract: input.slice(CONTRACT_OFFSET, CONTRACT_OFFSET + CONTRACT_LENGTH),
+    //  metadata: input.slice(CONTRACT_OFFSET + CONTRACT_LENGTH - METADATA_LENGTH, CONTRACT_OFFSET + CONTRACT_LENGTH),
+    //  arguments = input.slice(CONTRACT_OFFSET + CONTRACT_LENGTH),
+    // };
+    parsedconstructor = input.slice(0,CONTRACT_OFFSET + CONTRACT_LENGTH)
+    arguments = input.slice(CONTRACT_OFFSET + CONTRACT_LENGTH),
+    result = ethers.utils.defaultAbiCoder.decode(
+      abi,
+      "0x"+arguments
+    )
+    return [parsedconstructor,result]
+  }
+
   before(async function () {
     const readFile = JSON.parse(await fs.readFile("temp.txt", "utf-8"))
     contract_address = readFile.contractAddress
@@ -29,19 +62,42 @@ describe("ERC20 test", function () {
     }
     else {
       abi = JSON.parse(getAbi.data.result)
+      constructor = []
+      for (each in abi){
+        if (abi[each]["type"] == "constructor"){
+          for (i in abi[each]["inputs"]){
+            constructor.push(abi[each]["inputs"][i]["internalType"])
+          }
+        }
+      }
     }
   })
 
   beforeEach(async function () {
     if (abi) {
-      //コントラクトをデプロイ
-      const getContract = await ethers.getContractFactory(abi, creatinBytecode);
-      deployedContract = await getContract.deploy();
-      await deployedContract.deployed()
-
       rawAddresses = await ethers.getSigners();
       owner = rawAddresses[0];
+
+      //コンストラクタの引数を取得
+      [parsedconstructorbytecode,arguments] = await getConstructorArguments(creatinBytecode,constructor)
+
+      let alteredArguments = []
+      //constructor内でAddressは重要ロールのEOAか、トークンなどのアドレス。だからデフォルトではOwnerに指定できるようにする
+      for(var i=0;i<constructor.length;i++){
+        if(constructor[i] == "address"){
+          alteredArguments.push(owner.address);
+        }else{
+          alteredArguments.push(arguments[i])
+        }
+      }
+
+      //コントラクトをデプロイ
+      const getContract = await ethers.getContractFactory(abi, parsedconstructorbytecode);
+      deployedContract = await getContract.deploy(...alteredArguments);
+      await deployedContract.deployed()
+
       //Mintできるもののみテスト。場合によってはアドレスも必要になる場合あり。分岐を追記する
+
       try {
         await deployedContract.connect(owner).mint(rawAddresses[0].address, 100);
       } catch {
