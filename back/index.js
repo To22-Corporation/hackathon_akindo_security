@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 dotenv.config();
 
 const scanABI = require("./namecheck/scanabi.js");
+const chainID = require("./namecheck/chainID.js");
 const scamCheck = require("./scamCheck/scanMain.js");
 const getTokenAmount = require("./transactionCheck/TotalSupplyMain.js");
 const scanHtml = require("./namecheck/htmlCheck.js");
@@ -142,6 +143,23 @@ app.post("/erc20ScamCheck", async (req, res) => {
   }
   const response = await scamCheck.scamCheck(contractAddress, network)
   res.json(response);
+})
+
+//OxアドレスからチェーンIDを判定する
+app.post("/checkchainID", async (req, res) => {
+  chainIDfunc = chainID["func"]
+  console.log("thanks for calling")
+  const { contractAddress } = req.body;
+  console.log(contractAddress);
+  if (!contractAddress || contractAddress.length != 42 || contractAddress.slice(0, 2) != "0x") {
+    res.status(400).json({
+      status: false,
+      message: "arguments error",
+    });
+    return
+  }
+  const response = await chainIDfunc(contractAddress);
+  res.json(response)
 })
 
 //HTML上のコントラクトアドレスを抽出するAPI
