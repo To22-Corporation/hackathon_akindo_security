@@ -44,7 +44,10 @@ describe("ERC20 test", function () {
       try {
         await deployedContract.connect(owner).mint(rawAddresses[0].address, 100);
       } catch {
-        await deployedContract.connect(owner).mint(100);
+        try {
+          await deployedContract.connect(owner).mint(100);
+        }
+        catch { }
       }
     }
   })

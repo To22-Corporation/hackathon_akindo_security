@@ -20,8 +20,8 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       fetch("https://hackathon-security.herokuapp.com/getAddressOnHtml", param)
         .then((response) => response.json())
         .then((data) => {
-          if (data[0]) {
-            console.log(data)
+          console.log(data)
+          if (data[0] && data != "error") {
             chrome.windows.create({
               url: "https://hackathon-akindo-security.vercel.app/" + `?address=${data[0]}`,
               focused: true,
