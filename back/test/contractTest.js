@@ -11,7 +11,7 @@ let rawAddresses, owner, deployedContract;
 var assert = require('chai').assert
 
 let contract_address, creatinBytecode, abi, etherscan_network, etherscan_key
-
+let alteredArguments = []
 
 describe("ERC20 test", function () {
   getConstructorArguments = async (input, abi) => {
@@ -61,32 +61,25 @@ describe("ERC20 test", function () {
         }
       }
     }
+    //コンストラクタの引数を取得
+    [parsedconstructorbytecode, arguments] = await getConstructorArguments(creatinBytecode, constructor)
+    //constructor内でAddressは重要ロールのEOAか、トークンなどのアドレス。だからデフォルトではOwnerに指定できるようにする
+    for (var i = 0; i < constructor.length; i++) {
+      if (constructor[i] == "address") {
+        alteredArguments.push(owner.address);
+      } else {
+        alteredArguments.push(arguments[i])
+      }
+    }
   })
 
   beforeEach(async function () {
     if (abi) {
       rawAddresses = await ethers.getSigners();
       owner = rawAddresses[0];
-
-      //コンストラクタの引数を取得
-      [parsedconstructorbytecode, arguments] = await getConstructorArguments(creatinBytecode, constructor)
-
-      let alteredArguments = []
-      //constructor内でAddressは重要ロールのEOAか、トークンなどのアドレス。だからデフォルトではOwnerに指定できるようにする
-      for (var i = 0; i < constructor.length; i++) {
-        if (constructor[i] == "address") {
-          alteredArguments.push(owner.address);
-        } else {
-          alteredArguments.push(arguments[i])
-        }
-      }
-
-      //コントラクトをデプロイ
       const getContract = await ethers.getContractFactory(abi, parsedconstructorbytecode);
       deployedContract = await getContract.deploy(...alteredArguments);
       await deployedContract.deployed()
-
-      //Mintできるもののみテスト。場合によってはアドレスも必要になる場合あり。分岐を追記する
 
       try {
         await deployedContract.connect(owner).mint(rawAddresses[0].address, 100);
@@ -116,15 +109,6 @@ describe("ERC20 test", function () {
     const tokenDecimal = await deployedContract.decimals();
     assert.typeOf(tokenDecimal, "number", "token decimal is not a number");
   });
-
-  /** total supply test */
-  /** 現状Passしない。BigNumberのAssetが必要。優先度低いのでスコープアウト */
-  /*
-  it("total suppy should return a number", async () => {
-    const tokenTotalSupply = await deployedContract.totalSupply();
-    assert.typeOf(tokenTotalSupply, "BigNumber", "token TotalSupply is not a number");
-  });
-  */
 
   /** balanceOf test */
   it("balanceOf should return correct amount for each user", async () => {
