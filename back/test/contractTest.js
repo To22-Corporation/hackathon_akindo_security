@@ -29,11 +29,11 @@ describe("ERC20 test", function () {
     const CONTRACT_OFFSET = parseInt(m[4] || m[5] || m[6], 16) * 2
 
     parsedconstructor = input.slice(0, CONTRACT_OFFSET + CONTRACT_LENGTH)
-    arguments = input.slice(CONTRACT_OFFSET + CONTRACT_LENGTH),
-      result = ethers.utils.defaultAbiCoder.decode(
-        abi,
-        "0x" + arguments
-      )
+    arguments = input.slice(CONTRACT_OFFSET + CONTRACT_LENGTH)
+    const result = ethers.utils.defaultAbiCoder.decode(
+      abi,
+      "0x" + arguments
+    )
     return [parsedconstructor, result]
 
   }
@@ -58,6 +58,9 @@ describe("ERC20 test", function () {
           for (i in abi[each]["inputs"]) {
             constructor.push(abi[each]["inputs"][i]["internalType"])
           }
+        }
+        if (abi[each]["type"] == "function" && abi[each]["name"] == "implementation") {
+          throw new Error('UpgradeableProxy')
         }
       }
     }
@@ -89,6 +92,8 @@ describe("ERC20 test", function () {
         }
         catch { }
       }
+    } else {
+      throw new Error('Abi Error')
     }
   })
 
