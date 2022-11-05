@@ -38,10 +38,6 @@ const Result: React.FC<Props> = (props) => {
       return "green.400";
     }
   };
-  console.log("isScam :", props.isScam);
-  console.log("transactionData :", props.transactionData);
-  console.log("testData :", props.testData);
-  console.log("functionCheckData :", props.functionCheckData);
 
   if (props.isScam)
     return (
@@ -154,7 +150,7 @@ const Result: React.FC<Props> = (props) => {
               )}
 
               <Text marginTop="60px" alignItems="center" fontWeight="bold">
-                Owner {"&"} Transaction
+                Rugpull risk check
               </Text>
             </Box>
 

@@ -19,25 +19,25 @@ const Home: NextPage = () => {
   React.useEffect(() => {
     (async () => {
       if (contractAddress && network) {
-        // try {
-        //   const checkIsScamListResponse = await fetch(
-        //     "https://hackathon-security.herokuapp.com/erc20ScamCheck",
-        //     {
-        //       method: "POST",
-        //       mode: "cors",
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //       },
-        //       body: JSON.stringify({ contractAddress, network }),
-        //     }
-        //   );
-        //   const isScam = await checkIsScamListResponse.json();
-        //   setIsScam(isScam.result);
-        // } catch (e) {}
+        try {
+          const checkIsScamListResponse = await fetch(
+            "https://hackathon-security.herokuapp.com/erc20ScamCheck",
+            {
+              method: "POST",
+              mode: "cors",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ contractAddress, network }),
+            }
+          );
+          const isScam = await checkIsScamListResponse.json();
+          setIsScam(isScam.result);
+        } catch (e) {}
 
-        // if (isScam) {
-        //   return;
-        // }
+        if (isScam) {
+          return;
+        }
 
         // トランザクション履歴確認
         try {

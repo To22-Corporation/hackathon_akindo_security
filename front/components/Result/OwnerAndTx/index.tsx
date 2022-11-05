@@ -2,40 +2,14 @@ import type { NextPage } from "next";
 import { Box, Text, Flex, Image } from "@chakra-ui/react";
 
 type Props = {
-  txAmount?: number;
-  userAmount?: number;
   data: any;
 };
 export const OwnerAndTx: React.FC<Props> = (props) => {
   return (
     <Box>
       <Text fontWeight="bold" fontSize="28px" textAlign="center">
-        Number of Owner and Transaction
+        上位20人が全体の約{props.data.score}%のトークンを保有しています
       </Text>
-      <Flex justifyContent="space-between" alignItems="center" marginTop="60px">
-        <Box>
-          <Image src="/icon/addUser.svg" margin="0 auto" />
-          <Text
-            fontWeight="bold"
-            fontSize="48px"
-            marginTop="40px"
-            textAlign="center"
-          >
-            10000 address owner
-          </Text>
-        </Box>
-        <Box>
-          <Image src="/icon/swap.svg" margin="0 auto" />
-          <Text
-            fontWeight="bold"
-            fontSize="48px"
-            marginTop="40px"
-            textAlign="center"
-          >
-            10000 address owner
-          </Text>
-        </Box>
-      </Flex>
     </Box>
   );
 };
