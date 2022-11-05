@@ -28,7 +28,7 @@ const Index: React.FC<Props> = (props) => {
     },
   });
   const router = useRouter();
-  setValue("contractAddress", router.query.address);
+  setValue("contractAddress", router.query.address as string);
 
   return (
     <Box
