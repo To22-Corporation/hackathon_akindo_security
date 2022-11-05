@@ -150,7 +150,7 @@ const Result: React.FC<Props> = (props) => {
               )}
 
               <Text marginTop="60px" alignItems="center" fontWeight="bold">
-                Owner {"&"} Transaction
+                Rugpull risk check
               </Text>
             </Box>
 
