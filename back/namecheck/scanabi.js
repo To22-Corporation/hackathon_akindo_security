@@ -14,13 +14,15 @@ scanabi = async function (contractAddress, network) {
     // tokenに実装されていることを知っておきたい情報？（偏見）関数名にStringが含まれているとTrueと返す。
     // 実装レベルで検証したいが、自動化する場合はむずかしいかも
     var warningDict = {
+        "isERC20":false,
         "owner": false,
         "mint": false,
         "burn": false,
         "freeze": false,
         "pause": false,
         "blacklist": false,
-        "whitelist": false
+        "whitelist": false,
+        "upgradable": false
     }
 
     for (var i = 0; i < ABIlength; i++) {
@@ -31,12 +33,18 @@ scanabi = async function (contractAddress, network) {
             if (!ERC20functions.includes(eachFunctionName)) {
                 otherFunction.push(eachFunctionName)
             } else {
-                // console.log(eachFunctionName)
+                ERC20functions = ERC20functions.filter(function(ele){return ele != eachFunctionName;})
             }
             // warningDictの名前が含まれていた場合はTrueにする
             for (let key of Object.keys(warningDict)) {
-                if (eachFunctionName.toLowerCase().includes(key)) {
-                    warningDict[key] = true
+                if (key == !"upgradable"){
+                    if (eachFunctionName.toLowerCase().includes(key)) {
+                        warningDict[key] = true
+                    }                     
+                } else {
+                    if (eachFunctionName.toLowerCase().includes("implementation")) {
+                        warningDict[key] = true
+                    }     
                 }
             }
             // 型がFunction以外の場合
@@ -44,8 +52,13 @@ scanabi = async function (contractAddress, network) {
             console.log("event or constructor:", responseJSON[i]["name"])
         }
     }
-    const data = { "otherFunction": otherFunction, "warningDict": warningDict }
 
+    //ERC20に必要な最低限の関数があるかどうか
+    if (ERC20functions.length == 0){
+        warningDict["isERC20"] = true
+    }
+
+    const data = { "otherFunction": otherFunction, "warningDict": warningDict }
     return data
 }
 

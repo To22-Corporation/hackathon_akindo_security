@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import * as React from "react";
 import { Box } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import {
   Input,
   Button,
@@ -17,6 +18,7 @@ type Props = {
 };
 
 import { useForm } from "react-hook-form";
+
 const Index: React.FC<Props> = (props) => {
   const [radioValue, setRadioValue] = React.useState<string>("eth");
   const { setValue, handleSubmit, getValues } = useForm({
@@ -25,6 +27,8 @@ const Index: React.FC<Props> = (props) => {
       network: "eth",
     },
   });
+  const router = useRouter();
+  setValue("contractAddress", router.query.address);
 
   return (
     <Box
@@ -57,6 +61,7 @@ const Index: React.FC<Props> = (props) => {
           <Input
             onChange={(data) => setValue("contractAddress", data.target.value)}
             maxWidth="800px"
+            defaultValue={getValues("contractAddress")}
             id="contractAddress"
             size="md"
             placeholder="コントラクトアドレスを入力してください"
