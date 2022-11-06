@@ -15,7 +15,6 @@ export const TestResult: React.FC<Props> = (props) => {
     if (key === "") return false;
     return props.data[key];
   };
-  console.log("testItems ;", testItems);
 
   return (
     <Box>

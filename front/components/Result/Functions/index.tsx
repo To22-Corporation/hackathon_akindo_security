@@ -7,7 +7,6 @@ type Props = {
 };
 
 export const Functions: React.FC<Props> = (props) => {
-  console.log("functions ;", props);
   return (
     <Box>
       <Text fontWeight="bold" fontSize="28px" textAlign="center">
