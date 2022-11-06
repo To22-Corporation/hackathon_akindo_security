@@ -1,6 +1,6 @@
 # 🛡 SecurityWise - Tokyo Web3 Hackathon 2022
 
-[Live demo is here !!](https://securitywise.studio.site/)
+## [Live demo is here !!](https://securitywise.studio.site/)
 
 ☟ Sample Contracts
 
@@ -10,6 +10,10 @@
 
 ※現状 ERC20 トークンのみ対応しています。  
 ※今後 ERC721 やその他チェーンへの対応もしていきます。
+
+# 🎬 ピッチ＆デモ
+
+## [loom ](https://www.loom.com/share/02c4ce770e8940c98796e6acdf321488)
 
 # 🚀 プロダクト概要
 
@@ -42,8 +46,6 @@
 
 ● WOW factor  
 他のセキュリティツールもあるが、実際にコントラクトを内部でテストしている点、web上のリスク情報含め複数の情報から判断している点についてはオリジナル  
-
-# 🎬 ピッチ＆デモ
 
 # 💬 課題
 
