@@ -1,6 +1,6 @@
 # 🛡 SecurityWise - Tokyo Web3 Hackathon 2022
 
-[Live demo is here !!](https://hackathon-akindo-security.vercel.app/)
+[Live demo is here !!](https://securitywise.studio.site/)
 
 ☟ Sample Contracts
 
