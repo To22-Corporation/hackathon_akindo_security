@@ -8,6 +8,9 @@
 △ BSC 0x09C5a4eF1629789f2F003f1e66CaC2becC9897d4  
 ✗ ETH 0xa42d025be7fddf6e4a922faee60bb032273cf8c8
 
+※現状 ERC20 トークンのみ対応しています。  
+※今後 ERC721 やその他チェーンへの対応もしていきます。
+
 # 🚀 プロダクト概要
 
 ## ERC-20 トークン安全性確認ツール SecurityWise
